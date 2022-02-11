@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
+// import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 
 import com.revrobotics.CANSparkMax;
@@ -37,7 +37,8 @@ public class Robot extends TimedRobot {
   //private final PWMSparkMax m_rightDrive = new PWMSparkMax(1);
   //private final DifferentialDrive m_robotDrive = new DifferentialDrive(m_leftDrive, m_rightDrive);
   
-  private final Joystick m_stick = new Joystick(0);
+  private final Joystick rightJoystick = new Joystick(1);
+  private final Joystick leftJoystick = new Joystick(0);
   private final Timer m_timer = new Timer();
 
   /**
@@ -77,7 +78,8 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during teleoperated mode. */
   @Override
   public void teleopPeriodic() {
-    difDrive.arcadeDrive(m_stick.getY(), m_stick.getX());
+    //difDrive.arcadeDrive(m_stick.getY(), m_stick.getX());
+    difDrive.tankDrive(rightJoystick.getY(), leftJoystick.getY());
   }
 
   /** This function is called once each time the robot enters test mode. */
