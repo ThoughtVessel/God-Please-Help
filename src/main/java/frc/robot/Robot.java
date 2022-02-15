@@ -31,7 +31,7 @@ public class Robot extends TimedRobot {
   private MotorControllerGroup leftMotorGroup = new MotorControllerGroup(leftFrontMotor, leftBackMotor);
   private MotorControllerGroup rightMotorGroup = new MotorControllerGroup(rightFrontMotor, rightBackMotor);
 
-  private DifferentialDrive difDrive = new DifferentialDrive(leftMotorGroup, rightMotorGroup);
+  private DifferentialDrive difDrive = new DifferentialDrive(rightMotorGroup, leftMotorGroup);
 
   //private final PWMSparkMax m_leftDrive = new PWMSparkMax(0);
   //private final PWMSparkMax m_rightDrive = new PWMSparkMax(1);
@@ -78,8 +78,8 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during teleoperated mode. */
   @Override
   public void teleopPeriodic() {
-    //difDrive.arcadeDrive(m_stick.getY(), m_stick.getX());
-    difDrive.tankDrive(rightJoystick.getY(), leftJoystick.getY());
+    difDrive.arcadeDrive(leftJoystick.getY(), leftJoystick.getX());
+    //difDrive.tankDrive(rightJoystick.getY(), leftJoystick.getY());
   }
 
   /** This function is called once each time the robot enters test mode. */
