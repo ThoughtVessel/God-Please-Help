@@ -91,12 +91,8 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during teleoperated mode. */
   @Override
   public void teleopPeriodic() {
-<<<<<<< HEAD
-    difDrive.arcadeDrive(leftJoystick.getY(), leftJoystick.getX());
     //difDrive.tankDrive(rightJoystick.getY(), leftJoystick.getY());
-=======
     difDrive.arcadeDrive(joystick.getY(), joystick.getX());
-    //difDrive.tankDrive(rightJoystick.getY(), leftJoystick.getY());
 
     ///Toggles intake from on to off
     if (joystick.getTriggerPressed()) {
@@ -111,12 +107,11 @@ public class Robot extends TimedRobot {
 
     if(toggleIntake){
       //ToDo set intake motor to on
-      intakeMotor.set(1.0);
+      intakeMotor.set(0.2);
     } else {
       //To do set intake motor to off
       intakeMotor.stopMotor();
     }
->>>>>>> 9a44b27ca02ac95029136407eb53a85e7fade940
   }
 
   /** This function is called once each time the robot enters test mode. */
