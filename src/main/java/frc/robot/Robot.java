@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 // import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
+import edu.wpi.first.wpilibj.motorcontrol.Spark;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -23,6 +24,10 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
  * directory.
  */
 public class Robot extends TimedRobot {
+
+  /////////////////
+  //Drivetrain Stuff
+  //////////////////
   private CANSparkMax leftFrontMotor = new CANSparkMax(Constants.LEFT_FRONT_MOTOR_ID, MotorType.kBrushed);
   private CANSparkMax leftBackMotor = new CANSparkMax(Constants.LEFT_BACK_MOTOR_ID, MotorType.kBrushed);
   private CANSparkMax rightFrontMotor = new CANSparkMax(Constants.RIGHT_FRONT_MOTOR_ID, MotorType.kBrushed);
@@ -37,9 +42,17 @@ public class Robot extends TimedRobot {
   //private final PWMSparkMax m_rightDrive = new PWMSparkMax(1);
   //private final DifferentialDrive m_robotDrive = new DifferentialDrive(m_leftDrive, m_rightDrive);
   
-  private final Joystick rightJoystick = new Joystick(1);
-  private final Joystick leftJoystick = new Joystick(0);
+  //private final Joystick rightJoystick = new Joystick(1);
+  private final Joystick joystick = new Joystick(0);
   private final Timer m_timer = new Timer();
+
+  //////////////
+  //Intake stuff
+  //////////////
+  private boolean toggleIntake = false;
+
+  private Spark intakeMotor = new Spark(0);
+
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -78,8 +91,27 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during teleoperated mode. */
   @Override
   public void teleopPeriodic() {
-    //difDrive.arcadeDrive(m_stick.getY(), m_stick.getX());
-    difDrive.tankDrive(rightJoystick.getY(), leftJoystick.getY());
+    difDrive.arcadeDrive(joystick.getY(), joystick.getX());
+    //difDrive.tankDrive(rightJoystick.getY(), leftJoystick.getY());
+
+    ///Toggles intake from on to off
+    if (joystick.getTriggerPressed()) {
+      if (toggleIntake) {
+        // Current state is true so turn off
+        toggleIntake = false;
+      } else {
+        // Current state is false so turn on
+        toggleIntake = true;
+      }
+    }
+
+    if(toggleIntake){
+      //ToDo set intake motor to on
+      intakeMotor.set(1.0);
+    } else {
+      //To do set intake motor to off
+      intakeMotor.stopMotor();
+    }
   }
 
   /** This function is called once each time the robot enters test mode. */
