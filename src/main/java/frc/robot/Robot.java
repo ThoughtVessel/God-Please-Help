@@ -115,7 +115,7 @@ public class Robot extends TimedRobot {
 
     if(toggleIntake){
       //ToDo set intake motor to on
-      intakeMotor.set(0.8);
+      intakeMotor.set(0.4);
       transitionMotor.set(1);
     } else {
       //To do set intake motor to off
