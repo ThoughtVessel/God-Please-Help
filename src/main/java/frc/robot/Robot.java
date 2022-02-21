@@ -54,6 +54,14 @@ public class Robot extends TimedRobot {
   private Spark intakeMotor = new Spark(0);
 
 
+  //////////////
+  //Transition Stuff
+  //////////////
+  private CANSparkMax transitionMotor = new CANSparkMax(Constants.TRANSITION_MOTOR_ID, MotorType.kBrushed);
+
+
+
+
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -108,9 +116,11 @@ public class Robot extends TimedRobot {
     if(toggleIntake){
       //ToDo set intake motor to on
       intakeMotor.set(0.8);
+      transitionMotor.set(1);
     } else {
       //To do set intake motor to off
       intakeMotor.stopMotor();
+      transitionMotor.stopMotor();
     }
   }
 
