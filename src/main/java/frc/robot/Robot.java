@@ -116,12 +116,13 @@ public class Robot extends TimedRobot {
     if(toggleIntake){
       //ToDo set intake motor to on
       intakeMotor.set(0.4);
-      transitionMotor.set((joystick.getThrottle() / 2) + 0.5);
     } else {
       //To do set intake motor to off
       intakeMotor.stopMotor();
-      transitionMotor.stopMotor();
     }
+
+    //Control the transition/shooter.
+    transitionMotor.set((joystick.getThrottle() / 2) + 0.5);
   }
 
   /** This function is called once each time the robot enters test mode. */
