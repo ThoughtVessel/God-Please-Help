@@ -51,7 +51,7 @@ public class Robot extends TimedRobot {
   //////////////
   private boolean toggleIntake = false;
 
-  private Spark intakeMotor = new Spark(0);
+  private Spark intakeMotor = new Spark(Constants.INTAKE_MOTOR_ID);
 
 
   //////////////
@@ -116,7 +116,7 @@ public class Robot extends TimedRobot {
     if(toggleIntake){
       //ToDo set intake motor to on
       intakeMotor.set(0.4);
-      transitionMotor.set(1);
+      transitionMotor.set((joystick.getThrottle() / 2) + 0.5);
     } else {
       //To do set intake motor to off
       intakeMotor.stopMotor();
