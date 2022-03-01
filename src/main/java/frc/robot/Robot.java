@@ -51,13 +51,14 @@ public class Robot extends TimedRobot {
   //////////////
   private boolean toggleIntake = false;
 
-  private Spark intakeMotor = new Spark(Constants.INTAKE_MOTOR_ID);
+  private CANSparkMax intakeMotor = new CANSparkMax(Constants.INTAKE_MOTOR_ID, MotorType.kBrushless);
 
 
   //////////////
   //Transition Stuff
   //////////////
-  private CANSparkMax transitionMotor = new CANSparkMax(Constants.TRANSITION_MOTOR_ID, MotorType.kBrushed);
+  private Spark shooterMotor = new Spark(Constants.SHOOTER_MOTOR_ID);
+  
 
 
 
@@ -115,14 +116,14 @@ public class Robot extends TimedRobot {
 
     if(toggleIntake){
       //ToDo set intake motor to on
-      intakeMotor.set(0.4);
+      intakeMotor.set(Constants.INTAKE_MOTOR_SPEED);
     } else {
       //To do set intake motor to off
       intakeMotor.stopMotor();
     }
 
     //Control the transition/shooter.
-    transitionMotor.set((joystick.getThrottle() / 2) + 0.5);
+    shooterMotor.set((joystick.getThrottle() / 2) + 0.5);
   }
 
   /** This function is called once each time the robot enters test mode. */
