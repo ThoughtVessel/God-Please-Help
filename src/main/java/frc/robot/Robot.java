@@ -12,6 +12,8 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 // import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
+import edu.wpi.first.wpilibj2.command.button.Button;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -42,8 +44,11 @@ public class Robot extends TimedRobot {
   //private final PWMSparkMax m_rightDrive = new PWMSparkMax(1);
   //private final DifferentialDrive m_robotDrive = new DifferentialDrive(m_leftDrive, m_rightDrive);
   
-  //private final Joystick rightJoystick = new Joystick(1);
   private final Joystick joystick = new Joystick(0);
+  //Button intakeLower = new JoystickButton(joystick, 3);
+  //Button intakeHigher = new JoystickButton(joystick, 4);
+  
+
   private final Timer m_timer = new Timer();
 
   //////////////
@@ -52,11 +57,12 @@ public class Robot extends TimedRobot {
   private boolean toggleIntake = false;
 
   private CANSparkMax intakeMotor = new CANSparkMax(Constants.INTAKE_MOTOR_ID, MotorType.kBrushless);
+  
 
 
-  //////////////
+  //////////////////
   //Transition Stuff
-  //////////////
+  //////////////////
   private Spark shooterMotor = new Spark(Constants.SHOOTER_MOTOR_ID);
   
 
@@ -114,9 +120,17 @@ public class Robot extends TimedRobot {
       }
     }
 
+    double intakeSpeed = Constants.INTAKE_MOTOR_SPEED;
+    if(joystick.getRawButtonPressed(3)){
+      intakeSpeed -= 0.05;
+    }
+    if(joystick.getRawButtonPressed(4)){
+      intakeSpeed += 0.05;
+    }
+
     if(toggleIntake){
       //ToDo set intake motor to on
-      intakeMotor.set(Constants.INTAKE_MOTOR_SPEED);
+      intakeMotor.set(intakeSpeed);
     } else {
       //To do set intake motor to off
       intakeMotor.stopMotor();
