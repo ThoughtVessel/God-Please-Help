@@ -55,16 +55,22 @@ public class Robot extends TimedRobot {
   //Intake stuff
   //////////////
   private boolean toggleIntake = false;
-  double intakeSpeed = Constants.INTAKE_MOTOR_SPEED;
+  private double intakeSpeed = Constants.INTAKE_MOTOR_SPEED;
 
   private CANSparkMax intakeMotor = new CANSparkMax(Constants.INTAKE_MOTOR_ID, MotorType.kBrushless);
   
 
 
   //////////////////
-  //Transition Stuff
+  //Shooter Stuff
   //////////////////
   private Spark shooterMotor = new Spark(Constants.SHOOTER_MOTOR_ID);
+
+  //////////////////
+  //Intake Stuff Stuff
+  //////////////////
+  private boolean toggleTransition = false;
+  private Spark transitionMotor = new Spark(Constants.TRANSITION_MOTOR_ID);
   
 
 
@@ -118,15 +124,8 @@ public class Robot extends TimedRobot {
       } else {
         // Current state is false so turn on
         toggleIntake = true;
+        intakeSpeed = Constants.INTAKE_MOTOR_SPEED;
       }
-    }
-
-    
-    if(joystick.getRawButtonPressed(3)){
-      intakeSpeed -= 0.05;
-    }
-    if(joystick.getRawButtonPressed(4)){
-      intakeSpeed += 0.05;
     }
 
     if(toggleIntake){
@@ -136,6 +135,43 @@ public class Robot extends TimedRobot {
       //To do set intake motor to off
       intakeMotor.stopMotor();
     }
+
+
+
+
+    ///Toggles transition from on to off
+    if (joystick.getRawButtonPressed(2)) {
+      if (toggleTransition) {
+        // Current state is true so turn off
+        toggleTransition = false;
+      } else {
+        // Current state is false so turn on
+        toggleTransition = true;
+      }
+    }
+
+    if(toggleTransition){
+      //ToDo set intake motor to on
+      transitionMotor.set(1);
+    } else {
+      //To do set intake motor to off
+      transitionMotor.stopMotor();
+    }
+
+
+
+    //Button if statements
+    if(joystick.getRawButtonPressed(3)){
+      intakeSpeed -= 0.05;
+    }
+    if(joystick.getRawButtonPressed(4)){
+      intakeSpeed += 0.05;
+    }
+    if(joystick.getRawButtonPressed(5)){
+      intakeSpeed *= -1;
+    }
+
+
 
     //Control the transition/shooter.
     shooterMotor.set((joystick.getThrottle() / 2) + 0.5);
