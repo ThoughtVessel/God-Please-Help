@@ -5,6 +5,8 @@
 package frc.robot;
 import frc.robot.Constants;
 
+import java.lang.Thread;
+
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
@@ -116,8 +118,53 @@ public class Robot extends TimedRobot {
     //difDrive.tankDrive(rightJoystick.getY(), leftJoystick.getY());
     difDrive.arcadeDrive(joystick.getY(), joystick.getX());
 
+
+    intakeStuff();
+
+
+    shootStuff();
+
+
+    //Button if statements
+    buttonIfStatements();
+    
+
+
+
+    //Control the transition/shooter.
+    shooterMotor.set((joystick.getThrottle() / 2) + 0.5);
+  }
+
+  /** This function is called once each time the robot enters test mode. */
+  @Override
+  public void testInit() {}
+
+  /** This function is called periodically during test mode. */
+  @Override
+  public void testPeriodic() {}
+
+
+  ///////////////
+  //Functions
+  //////////////
+  
+  //Runs all the button if statements.
+  private void buttonIfStatements(){
+    if(joystick.getRawButtonPressed(3)){
+      intakeSpeed -= 0.05;
+    }
+    if(joystick.getRawButtonPressed(4)){
+      intakeSpeed += 0.05;
+    }
+    if(joystick.getRawButtonPressed(5)){
+      intakeSpeed *= -1;
+    }
+  }
+
+  //Intake stuff function
+  private void intakeStuff(){
     ///Toggles intake from on to off
-    if (joystick.getTriggerPressed()) {
+    if (joystick.getRawButtonPressed(2)) {
       if (toggleIntake) {
         // Current state is true so turn off
         toggleIntake = false;
@@ -131,16 +178,18 @@ public class Robot extends TimedRobot {
     if(toggleIntake){
       //ToDo set intake motor to on
       intakeMotor.set(intakeSpeed);
+      transitionMotor.set(1);
     } else {
       //To do set intake motor to off
       intakeMotor.stopMotor();
+      transitionMotor.stopMotor();
     }
+  }
 
-
-
-
+  //Transition Function
+  private void transitionStuff(){
     ///Toggles transition from on to off
-    if (joystick.getRawButtonPressed(2)) {
+    if (joystick.getRawButtonPressed(6)) {
       if (toggleTransition) {
         // Current state is true so turn off
         toggleTransition = false;
@@ -157,31 +206,18 @@ public class Robot extends TimedRobot {
       //To do set intake motor to off
       transitionMotor.stopMotor();
     }
-
-
-
-    //Button if statements
-    if(joystick.getRawButtonPressed(3)){
-      intakeSpeed -= 0.05;
-    }
-    if(joystick.getRawButtonPressed(4)){
-      intakeSpeed += 0.05;
-    }
-    if(joystick.getRawButtonPressed(5)){
-      intakeSpeed *= -1;
-    }
-
-
-
-    //Control the transition/shooter.
-    shooterMotor.set((joystick.getThrottle() / 2) + 0.5);
   }
 
-  /** This function is called once each time the robot enters test mode. */
-  @Override
-  public void testInit() {}
+  //Shooter function
+  private void shootStuff(){
+    if(joystick.getTriggerPressed()){
+      shooterMotor.set(-1);
+      Timer.delay(2);
+      transitionMotor.set(1);
+      Timer.delay(1);
+      shooterMotor.stopMotor();
+      transitionMotor.stopMotor();
+    }
+  }
 
-  /** This function is called periodically during test mode. */
-  @Override
-  public void testPeriodic() {}
 }
