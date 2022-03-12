@@ -11,5 +11,5 @@ public final class Constants {
 
   public static final int INTAKE_MOTOR_ID = 5;
 
-  public static final double INTAKE_MOTOR_SPEED = -0.6;
+  public static final double INTAKE_MOTOR_SPEED = -0.4;
 }

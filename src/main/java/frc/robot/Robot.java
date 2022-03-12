@@ -128,6 +128,19 @@ public class Robot extends TimedRobot {
       }
     }
 
+    
+    if(joystick.getRawButtonPressed(3)){
+      if(intakeSpeed < 1){
+        intakeSpeed += 0.05;
+      }
+    }
+    if(joystick.getRawButtonPressed(4)){
+      if(intakeSpeed > -1){
+        intakeSpeed -= 0.05;
+      }
+      
+    }
+
     if(toggleIntake){
       //ToDo set intake motor to on
       intakeMotor.set(intakeSpeed);
