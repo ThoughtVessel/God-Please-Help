@@ -59,7 +59,7 @@ public class Robot extends TimedRobot {
   //Intake stuff
   //////////////
   private boolean toggleIntake = false;
-  private double intakeSpeed = Constants.INTAKE_MOTOR_SPEED;
+  private double intakeSpeed = Constants.INTAKE_MOTOR_SPEED_LOW;
 
   private CANSparkMax intakeMotor = new CANSparkMax(Constants.INTAKE_MOTOR_ID, MotorType.kBrushless);
   
