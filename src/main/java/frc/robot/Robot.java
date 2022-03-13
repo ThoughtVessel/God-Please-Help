@@ -8,6 +8,7 @@ import frc.robot.Constants;
 import java.lang.Thread;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -47,6 +48,7 @@ public class Robot extends TimedRobot {
   //private final DifferentialDrive m_robotDrive = new DifferentialDrive(m_leftDrive, m_rightDrive);
   
   private final Joystick joystick = new Joystick(0);
+  private final XboxController controller = new XboxController(0);
   //Button intakeLower = new JoystickButton(joystick, 3);
   //Button intakeHigher = new JoystickButton(joystick, 4);
   
@@ -116,7 +118,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     //difDrive.tankDrive(rightJoystick.getY(), leftJoystick.getY());
-    difDrive.arcadeDrive(joystick.getY(), joystick.getZ());
+    difDrive.arcadeDrive(controller.getLeftY(), controller.getRightX());
 
 
     intakeStuff();
@@ -150,38 +152,50 @@ public class Robot extends TimedRobot {
   
   //Runs all the button if statements.
   private void buttonIfStatements(){
-    if(joystick.getRawButtonPressed(3)){
+    if(controller.getRawButtonPressed(3)){
       intakeSpeed -= 0.05;
     }
-    if(joystick.getRawButtonPressed(4)){
+    if(controller.getRawButtonPressed(4)){
       intakeSpeed += 0.05;
     }
-    if(joystick.getRawButtonPressed(5)){
+    if(controller.getRawButtonPressed(10)){
       intakeSpeed *= -1;
     }
   }
 
   //Intake stuff function
   private void intakeStuff(){
-    ///Toggles intake from on to off
-    if (joystick.getRawButtonPressed(2)) {
+    ///Toggles intake from on to off fast speed
+    if (controller.getRawButtonPressed(6)) {
       if (toggleIntake) {
         // Current state is true so turn off
         toggleIntake = false;
       } else {
         // Current state is false so turn on
         toggleIntake = true;
-        intakeSpeed = Constants.INTAKE_MOTOR_SPEED;
+        intakeSpeed = Constants.INTAKE_MOTOR_SPEED_HIGH;
+      }
+    }
+
+    //Slow speed intake
+    if (controller.getRawButtonPressed(5)) {
+      if (toggleIntake) {
+        // Current state is true so turn off
+        toggleIntake = false;
+      } else {
+        // Current state is false so turn on
+        toggleIntake = true;
+        intakeSpeed = Constants.INTAKE_MOTOR_SPEED_LOW;
       }
     }
 
     
-    if(joystick.getRawButtonPressed(3)){
+    if(controller.getRawButtonPressed(3)){
       if(intakeSpeed < 1){
         intakeSpeed += 0.1;
       }
     }
-    if(joystick.getRawButtonPressed(4)){
+    if(controller.getRawButtonPressed(4)){
       if(intakeSpeed > -1){
         intakeSpeed -= 0.1;
       }
@@ -202,7 +216,7 @@ public class Robot extends TimedRobot {
   //Transition Function
   private void transitionStuff(){
     ///Toggles transition from on to off
-    if (joystick.getRawButtonPressed(6)) {
+    if (controller.getRawButtonPressed(6)) {
       if (toggleTransition) {
         // Current state is true so turn off
         toggleTransition = false;
@@ -223,7 +237,7 @@ public class Robot extends TimedRobot {
 
   //Shooter function
   private void shootStuff(){
-    if(joystick.getRawButtonPressed(5)){
+    if(joystick.getRawButtonPressed(1)){
       shooterMotor.set(1);
       Timer.delay(1);
       transitionMotor.set(1);
