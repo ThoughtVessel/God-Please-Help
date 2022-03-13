@@ -116,7 +116,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     //difDrive.tankDrive(rightJoystick.getY(), leftJoystick.getY());
-    difDrive.arcadeDrive(joystick.getY(), joystick.getX());
+    difDrive.arcadeDrive(joystick.getY(), joystick.getZ());
 
 
     intakeStuff();
@@ -178,12 +178,12 @@ public class Robot extends TimedRobot {
     
     if(joystick.getRawButtonPressed(3)){
       if(intakeSpeed < 1){
-        intakeSpeed += 0.05;
+        intakeSpeed += 0.1;
       }
     }
     if(joystick.getRawButtonPressed(4)){
       if(intakeSpeed > -1){
-        intakeSpeed -= 0.05;
+        intakeSpeed -= 0.1;
       }
       
     }

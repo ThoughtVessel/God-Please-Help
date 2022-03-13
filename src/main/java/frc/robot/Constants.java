@@ -12,7 +12,7 @@ public final class Constants {
   public static final int INTAKE_MOTOR_ID = 5;
 
 
-  public static final double INTAKE_MOTOR_SPEED = -0.4;
+  public static final double INTAKE_MOTOR_SPEED = -0.2;
   public static final double TRANSITION_MOTOR_SPEED = 1;
 
 }
