@@ -223,9 +223,9 @@ public class Robot extends TimedRobot {
 
   //Shooter function
   private void shootStuff(){
-    if(joystick.getTriggerPressed()){
-      shooterMotor.set(-1);
-      Timer.delay(2);
+    if(joystick.getRawButtonPressed(5)){
+      shooterMotor.set(1);
+      Timer.delay(1);
       transitionMotor.set(1);
       Timer.delay(1);
       shooterMotor.stopMotor();
