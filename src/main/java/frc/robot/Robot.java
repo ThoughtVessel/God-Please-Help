@@ -70,7 +70,7 @@ public class Robot extends TimedRobot {
   //Shooter Stuff
   //////////////////
   private Spark shooterMotor = new Spark(Constants.SHOOTER_MOTOR_ID);
-  double startShootingTime = 1000.0;
+  private double startShootingTime = 1000.0;
 
   //////////////////
   //Intake Stuff Stuff
@@ -107,13 +107,13 @@ public class Robot extends TimedRobot {
     // Drive for 2 seconds
     if (m_timer.get() < 2.0) {
       difDrive.arcadeDrive(0.5, 0.0); // drive forwards half speed
-    } else if (m_timer.get() > 2.0 && m_timer.get() < 3.0) {
+    } else if (m_timer.get() > 2.0 && m_timer.get() < 2.5) {
       difDrive.arcadeDrive(0.0, 1.0); // drive forwards half speed
     } else {
       difDrive.stopMotor(); // stop robot
     }
 
-    if (m_timer.get() > 3.0 && m_timer.get() < 3.5) {
+    if (m_timer.get() > 2.5 && m_timer.get() < 2.8) {
       shooterMotor.set(-1); // drive forwards half speed
     } else {
       shooterMotor.stopMotor(); // stop robot
@@ -125,10 +125,10 @@ public class Robot extends TimedRobot {
   /** This function is called once each time the robot enters teleoperated mode. */
   @Override
   public void teleopInit() {
+    startShootingTime = -100.0;
+
     m_timer.reset();
     m_timer.start();
-
-    startShootingTime = 1000.0;
   }
 
   /** This function is called periodically during teleoperated mode. */
@@ -258,23 +258,20 @@ public class Robot extends TimedRobot {
 
   //Shooter function
   private void shootStuff(){
-    
-
     //If person clicks the button, reset the startShooting timer.
-    if(startShootingTime > 2){
+    if(m_timer.get() - startShootingTime > 2){
       if(controller.getRawButtonPressed(4)){
         startShootingTime = m_timer.get();
       }
     }
 
-
     //Called routinely. If the shooting time has been reset, the thiong goews through its process.
-    if(startShootingTime < 2){
-      shooterMotor.set(Constants.SHOOTER_MOTOR_SPEED);
+    if(m_timer.get() - startShootingTime < 2){
+      shooterMotor.set(0.8);
     } else {
       shooterMotor.stopMotor();
     }
-    if(startShootingTime > 1 && startShootingTime < 2){
+    if(m_timer.get() - startShootingTime > 1 && m_timer.get() - startShootingTime < 2){
       transitionMotor.set(1);
     } else {
       intakeMotor.stopMotor();
