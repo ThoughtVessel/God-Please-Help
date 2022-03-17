@@ -183,7 +183,7 @@ public class Robot extends TimedRobot {
     }
   }
 
-  //Intake stuff function
+  //Intake Stuff Function
   private void intakeStuff(){
     ///Toggles intake from on to off fast speed
     if (controller.getRawButtonPressed(5)) {
@@ -234,7 +234,7 @@ public class Robot extends TimedRobot {
     }
   }
 
-  //Transition Function
+  //Transition Function (not used currently)
   private void transitionStuff(){
     ///Toggles transition from on to off
     if (controller.getRawButtonPressed(6)) {
@@ -270,7 +270,7 @@ public class Robot extends TimedRobot {
 
     //Called routinely. If the shooting time has been reset, the thiong goews through its process.
     if(startShootingTime < 2){
-      shooterMotor.set(0.8);
+      shooterMotor.set(Constants.SHOOTER_MOTOR_SPEED);
     } else {
       shooterMotor.stopMotor();
     }
