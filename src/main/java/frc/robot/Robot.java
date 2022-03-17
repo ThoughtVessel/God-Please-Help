@@ -70,6 +70,7 @@ public class Robot extends TimedRobot {
   //Shooter Stuff
   //////////////////
   private Spark shooterMotor = new Spark(Constants.SHOOTER_MOTOR_ID);
+  double startShootingTime = 1000.0;
 
   //////////////////
   //Intake Stuff Stuff
@@ -106,11 +107,7 @@ public class Robot extends TimedRobot {
     // Drive for 2 seconds
     if (m_timer.get() < 2.0) {
       difDrive.arcadeDrive(0.5, 0.0); // drive forwards half speed
-    } else {
-      difDrive.stopMotor(); // stop robot
-    }
-
-    if (m_timer.get() > 2.0 && m_timer.get() < 3.0) {
+    } else if (m_timer.get() > 2.0 && m_timer.get() < 3.0) {
       difDrive.arcadeDrive(0.0, 1.0); // drive forwards half speed
     } else {
       difDrive.stopMotor(); // stop robot
@@ -130,18 +127,21 @@ public class Robot extends TimedRobot {
   public void teleopInit() {
     m_timer.reset();
     m_timer.start();
+
+    startShootingTime = 1000.0;
   }
 
   /** This function is called periodically during teleoperated mode. */
   @Override
   public void teleopPeriodic() {
     //difDrive.tankDrive(rightJoystick.getY(), leftJoystick.getY());
-    difDrive.arcadeDrive(controller.getLeftY(), controller.getRightX()*0.6 + (controller.getRightX()/(Math.abs(controller.getRightX())))*0.4);
+    difDrive.arcadeDrive(controller.getLeftY(), controller.getRightX()*0.4 + (controller.getRightX()/(Math.abs(controller.getRightX())))*0.3);
 
     //Allows the intake to be activated.
     intakeStuff();
 
     //Shooting stuff
+
     shootStuff();
 
 
@@ -258,11 +258,11 @@ public class Robot extends TimedRobot {
 
   //Shooter function
   private void shootStuff(){
-    double startShootingTime = 1000.0;
+    
 
     //If person clicks the button, reset the startShooting timer.
     if(startShootingTime > 2){
-      if(joystick.getRawButtonPressed(4)){
+      if(controller.getRawButtonPressed(4)){
         startShootingTime = m_timer.get();
       }
     }
