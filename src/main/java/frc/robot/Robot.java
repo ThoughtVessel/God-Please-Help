@@ -6,6 +6,7 @@ package frc.robot;
 import frc.robot.Constants;
 
 import java.lang.Thread;
+import java.lang.Math;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
@@ -108,6 +109,20 @@ public class Robot extends TimedRobot {
     } else {
       difDrive.stopMotor(); // stop robot
     }
+
+    if (m_timer.get() > 2.0 && m_timer.get() < 3.0) {
+      difDrive.arcadeDrive(0.0, 1.0); // drive forwards half speed
+    } else {
+      difDrive.stopMotor(); // stop robot
+    }
+
+    if (m_timer.get() > 3.0 && m_timer.get() < 3.5) {
+      shooterMotor.set(-1); // drive forwards half speed
+    } else {
+      shooterMotor.stopMotor(); // stop robot
+    }
+
+
   }
 
   /** This function is called once each time the robot enters teleoperated mode. */
@@ -118,7 +133,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     //difDrive.tankDrive(rightJoystick.getY(), leftJoystick.getY());
-    difDrive.arcadeDrive(controller.getLeftY(), controller.getRightX());
+    difDrive.arcadeDrive(controller.getLeftY(), controller.getRightX()*0.7 + (controller.getRightX()/(Math.abs(controller.getRightX())))*0.3);
 
 
     intakeStuff();
@@ -134,7 +149,7 @@ public class Robot extends TimedRobot {
 
 
     //Control the transition/shooter.
-    shooterMotor.set((joystick.getThrottle() / 2) + 0.5);
+    //shooterMotor.set((joystick.getThrottle() / 2) + 0.5);
   }
 
   /** This function is called once each time the robot enters test mode. */
@@ -152,12 +167,14 @@ public class Robot extends TimedRobot {
   
   //Runs all the button if statements.
   private void buttonIfStatements(){
+    /*
     if(controller.getRawButtonPressed(3)){
       intakeSpeed -= 0.05;
     }
     if(controller.getRawButtonPressed(4)){
       intakeSpeed += 0.05;
     }
+    */
     if(controller.getRawButtonPressed(10)){
       intakeSpeed *= -1;
     }
@@ -166,7 +183,7 @@ public class Robot extends TimedRobot {
   //Intake stuff function
   private void intakeStuff(){
     ///Toggles intake from on to off fast speed
-    if (controller.getRawButtonPressed(6)) {
+    if (controller.getRawButtonPressed(5)) {
       if (toggleIntake) {
         // Current state is true so turn off
         toggleIntake = false;
@@ -178,7 +195,7 @@ public class Robot extends TimedRobot {
     }
 
     //Slow speed intake
-    if (controller.getRawButtonPressed(5)) {
+    if (controller.getRawButtonPressed(6)) {
       if (toggleIntake) {
         // Current state is true so turn off
         toggleIntake = false;
@@ -189,7 +206,7 @@ public class Robot extends TimedRobot {
       }
     }
 
-    
+    /*
     if(controller.getRawButtonPressed(3)){
       if(intakeSpeed < 1){
         intakeSpeed += 0.1;
@@ -201,6 +218,7 @@ public class Robot extends TimedRobot {
       }
       
     }
+    */
 
     if(toggleIntake){
       //ToDo set intake motor to on
@@ -237,7 +255,7 @@ public class Robot extends TimedRobot {
 
   //Shooter function
   private void shootStuff(){
-    if(joystick.getRawButtonPressed(1)){
+    if(joystick.getRawButtonPressed(4)){
       shooterMotor.set(1);
       Timer.delay(1);
       transitionMotor.set(1);
