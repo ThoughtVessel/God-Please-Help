@@ -127,18 +127,21 @@ public class Robot extends TimedRobot {
 
   /** This function is called once each time the robot enters teleoperated mode. */
   @Override
-  public void teleopInit() {}
+  public void teleopInit() {
+    m_timer.reset();
+    m_timer.start();
+  }
 
   /** This function is called periodically during teleoperated mode. */
   @Override
   public void teleopPeriodic() {
     //difDrive.tankDrive(rightJoystick.getY(), leftJoystick.getY());
-    difDrive.arcadeDrive(controller.getLeftY(), controller.getRightX()*0.7 + (controller.getRightX()/(Math.abs(controller.getRightX())))*0.3);
+    difDrive.arcadeDrive(controller.getLeftY(), controller.getRightX()*0.6 + (controller.getRightX()/(Math.abs(controller.getRightX())))*0.4);
 
-
+    //Allows the intake to be activated.
     intakeStuff();
 
-
+    //Shooting stuff
     shootStuff();
 
 
@@ -255,13 +258,26 @@ public class Robot extends TimedRobot {
 
   //Shooter function
   private void shootStuff(){
-    if(joystick.getRawButtonPressed(4)){
-      shooterMotor.set(1);
-      Timer.delay(1);
-      transitionMotor.set(1);
-      Timer.delay(1);
+    double startShootingTime = 1000.0;
+
+    //If person clicks the button, reset the startShooting timer.
+    if(startShootingTime > 2){
+      if(joystick.getRawButtonPressed(4)){
+        startShootingTime = m_timer.get();
+      }
+    }
+
+
+    //Called routinely. If the shooting time has been reset, the thiong goews through its process.
+    if(startShootingTime < 2){
+      shooterMotor.set(0.8);
+    } else {
       shooterMotor.stopMotor();
-      transitionMotor.stopMotor();
+    }
+    if(startShootingTime > 1 && startShootingTime < 2){
+      transitionMotor.set(1);
+    } else {
+      intakeMotor.stopMotor();
     }
   }
 
