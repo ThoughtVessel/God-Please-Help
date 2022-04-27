@@ -73,7 +73,7 @@ public class Robot extends TimedRobot {
   private double startShootingTime = 1000.0;
 
   //////////////////
-  //Intake Stuff Stuff
+  //Intake Stuff Stuff  FB
   //////////////////
   private boolean toggleTransition = false;
   private Spark transitionMotor = new Spark(Constants.TRANSITION_MOTOR_ID);
@@ -104,22 +104,47 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
-    // Drive for 2 seconds
+    // Spin 360 degrees to deploy intake
+    // Reverse shooter to deploy ball into transition
+    // Spin up shooter
+    // Turn Transition
+    // Back up
+    /*
     if (m_timer.get() < 2.0) {
-      difDrive.arcadeDrive(0.5, 0.0); // drive forwards half speed
-    } else if (m_timer.get() > 2.0 && m_timer.get() < 2.5) {
-      difDrive.arcadeDrive(0.0, 1.0); // drive forwards half speed
+      // Driv backward for space (1s)
+      difDrive.arcadeDrive(0.5, 0);
+
+    } else if (m_timer.get() < 2.5) {
+      // Drive forward
+      difDrive.arcadeDrive(-1,0);
+
+    } else if (m_timer.get() < 3.0) {
+      // Drive backward to deploy intake
+      difDrive.arcadeDrive(0.6, 0);
+
+    } else if (m_timer.get() < 3.5) {
+      // Drive forward to reposition a little
+      difDrive.arcadeDrive(0.0,0);
+    } else if (m_timer.get() < 7.0) {
+      // Stop driving
+      difDrive.arcadeDrive(0,0);
+      // Reverse shooter to deploy ball into transition (0.5s)
+      shooterMotor.set(-0.4);
+      transitionMotor.set(-0.4);
+    } else if (m_timer.get() < 9) {
+      shooterMotor.set(1);
+    } else if (m_timer.get() < 10){
+      transitionMotor.set(1);
+    } else if (m_timer.get() < 13){
+      difDrive.arcadeDrive(0.5, 0);
+      transitionMotor.stopMotor();
+      shooterMotor.stopMotor();
     } else {
-      difDrive.stopMotor(); // stop robot
+      // Stop everything
+      difDrive.stopMotor();
+
     }
-
-    if (m_timer.get() > 2.5 && m_timer.get() < 2.8) {
-      shooterMotor.set(-1); // drive forwards half speed
-    } else {
-      shooterMotor.stopMotor(); // stop robot
-    }
-
-
+    */
   }
 
   /** This function is called once each time the robot enters teleoperated mode. */
@@ -141,7 +166,6 @@ public class Robot extends TimedRobot {
     intakeStuff();
 
     //Shooting stuff
-
     shootStuff();
 
 
@@ -193,7 +217,7 @@ public class Robot extends TimedRobot {
       } else {
         // Current state is false so turn on
         toggleIntake = true;
-        intakeSpeed = Constants.INTAKE_MOTOR_SPEED_HIGH;
+        intakeSpeed = 0.6;
       }
     }
 
@@ -258,24 +282,39 @@ public class Robot extends TimedRobot {
 
   //Shooter function
   private void shootStuff(){
+    boolean toggleShooter = true;
     //If person clicks the button, reset the startShooting timer.
-    if(m_timer.get() - startShootingTime > 2){
+    if(m_timer.get() - startShootingTime > 2.5){
       if(controller.getRawButtonPressed(4)){
         startShootingTime = m_timer.get();
+        toggleShooter = true;
+      }
+    } else {
+      toggleShooter = true;
+    }
+
+    if(m_timer.get() - startShootingTime > 2.8){
+      toggleShooter = false;
+    }
+
+    if(toggleShooter){
+      //Called routinely. If the shooting time has been reset, the thiong goews through its process.
+      if(m_timer.get() - startShootingTime < 2){
+        shooterMotor.set(Constants.SHOOTER_MOTOR_SPEED);
+      } else if(m_timer.get() - startShootingTime < 2.5){
+        shooterMotor.set(-0.2);
+      } else {
+        shooterMotor.stopMotor();
+      } 
+      if(m_timer.get() - startShootingTime < 1){
+        transitionMotor.set(-0.4);
+      } else if( m_timer.get() - startShootingTime < 2){
+        transitionMotor.set(1);
+      } else {
+        transitionMotor.stopMotor();
       }
     }
 
-    //Called routinely. If the shooting time has been reset, the thiong goews through its process.
-    if(m_timer.get() - startShootingTime < 2){
-      shooterMotor.set(0.8);
-    } else {
-      shooterMotor.stopMotor();
-    }
-    if(m_timer.get() - startShootingTime > 1 && m_timer.get() - startShootingTime < 2){
-      transitionMotor.set(1);
-    } else {
-      intakeMotor.stopMotor();
-    }
   }
 
 }

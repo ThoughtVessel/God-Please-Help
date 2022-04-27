@@ -17,6 +17,6 @@ public final class Constants {
 
   public static final double TRANSITION_MOTOR_SPEED = 1;
 
-  public static final double  SHOOTER_MOTOR_SPEED = 0.8;
+  public static final double  SHOOTER_MOTOR_SPEED = 1.0;
 
 }
